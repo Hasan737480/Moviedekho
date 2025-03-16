@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Dekho</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ✅ Header Section -->
+    <header>
+        <h1>Movie Dekho</h1>
+        <input type="text" id="search-bar" placeholder="🔍 Search..." oninput="searchMovies()">
+    </header>
+
+    <!-- ✅ Live Video Section -->
+    <section class="live-video-section">
+        <div id="video-container" class="video-wrapper">
+            <div class="ad-text">Ads</div> <!-- 🔹 Video ke Top-Right Corner pe -->
+            <video id="live-video" autoplay muted playsinline>
+                <source id="video-source" src="" type="video/mp4">
+            </video>
+            <button id="mute-btn" class="mute-button">🔊</button>
+        </div>
+        <a id="live-video-link" href="#" target="_blank" class="link-button">📌 Get Link</a>
+    </section>
+
+    <!-- ✅ Top Movies Section -->
+    <section class="movies">
+        <h2>Popular Movies</h2>
+        <div id="movie-grid" class="movie-grid"></div>
+    </section>
+
+    <!-- ✅ Copyright & Important Links Section -->
+    <div class="copyright-text">
+        <p>⚠️ यह साइट केवल जानकारी और मनोरंजन उद्देश्यों के लिए है।</p>
+        <p>© 2014 - 2024, MOVIE DEKHO</p>
+        <p>
+            <a href="#">DMCA</a> | 
+            <a href="#">FAQ</a> | 
+            <a href="#">Privacy Policy</a> | 
+            <a href="#">Contact Us</a> | 
+            <a href="#">Sitemap</a>
+        </p>
+        <p>📧 Email: <a href="mailto:mohammad.hasan7374@gmail.com">mohammad.hasan7374@gmail.com</a></p>
+    </div>
+
+    <!-- ✅ Firebase + JavaScript -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhokupY...",
+            authDomain: "moviedekho-576f3.firebaseapp.com",
+            databaseURL: "https://moviedekho-576f3-default-rtdb.firebaseio.com",
+            projectId: "moviedekho-576f3",
+            storageBucket: "moviedekho-576f3.appspot.com",
+            messagingSenderId: "586462554983",
+            appId: "1:586462554983:web:c7829df0bb5699464eddc2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // ✅ Fetch Live Video & Auto Loop it
+        const videoRef = ref(database, "liveVideo");
+        onValue(videoRef, (snapshot) => {
+            const videoURL = snapshot.val();
+            let videoElement = document.getElementById("live-video");
+            let videoSource = document.getElementById("video-source");
+
+            if (videoURL.includes("youtube.com") || videoURL.includes("youtu.be")) {
+                let videoID = videoURL.split("v=")[1]?.split("&")[0] || videoURL.split("youtu.be/")[1];
+                let embedURL = `https://www.youtube.com/embed/${videoID}?autoplay=1&mute=1&loop=1&playlist=${videoID}&modestbranding=1&showinfo=0&controls=1`;
+
+                document.getElementById("video-container").innerHTML = `
+                    <iframe id="live-video" width="100%" height="300px" src="${embedURL}" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+                `;
+            } else {
+                videoSource.src = videoURL;
+                videoElement.load();
+                videoElement.play().catch(error => console.log("Autoplay prevented:", error));
+
+                // ✅ Video loop (repeat) automatically
+                videoElement.addEventListener("ended", function() {
+                    this.currentTime = 0;
+                    this.play();
+                });
+            }
+        });
+
+        // ✅ Fetch and Update Live Video Link
+        const videoLinkRef = ref(database, "liveVideoLink");
+        onValue(videoLinkRef, (snapshot) => {
+            const liveLink = snapshot.val();
+            if (liveLink) {
+                let liveVideoLinkElement = document.getElementById("live-video-link");
+                liveVideoLinkElement.href = liveLink;
+            }
+        });
+
+        // ✅ Mute Button
+        const muteBtn = document.getElementById("mute-btn");
+        const videoElement = document.getElementById("live-video");
+
+        muteBtn.addEventListener("click", () => {
+            videoElement.muted = !videoElement.muted;
+            muteBtn.textContent = videoElement.muted ? "🔇" : "🔊";
+        });
+
+        // ✅ Search Function
+        window.searchMovies = function() {
+            let input = document.getElementById("search-bar").value.toLowerCase();
+            let movieCards = document.querySelectorAll(".movie-card");
+
+            movieCards.forEach(card => {
+                let title = card.querySelector("h3").textContent.toLowerCase();
+                card.style.display = title.includes(input) ? "block" : "none";
+            });
+        };
+
+        // ✅ Fetch Movies Data
+        const moviesRef = ref(database, "movies");
+        onValue(moviesRef, (snapshot) => {
+            const movies = snapshot.val();
+            let movieList = document.getElementById("movie-grid");
+            movieList.innerHTML = "";
+
+            if (movies) {
+                for (let key in movies) {
+                    let movie = movies[key];
+                    movieList.innerHTML += `
+                        <div class="movie-card">
+                            <img src="${movie.poster}" alt="${movie.name}">
+                            <h3>${movie.name}</h3>
+                            <p>${movie.description}</p>
+                            <p>📅 ${movie.date}</p>
+                            <a href="${movie.download}" class="download-btn">🎬 Download</a>
+                        </div>
+                    `;
+                }
+            }
+        });
+
+    </script>
+
+</body>
+</html>
