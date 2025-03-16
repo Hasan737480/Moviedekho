@@ -1,0 +1,182 @@
+/* ✅ Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #111;
+  color: white;
+  text-align: center;
+}
+
+/* ✅ Header */
+header {
+  background: black;
+  padding: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+h1 {
+  margin: 0;
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+#search-bar {
+  width: 90%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+/* ✅ Live Video Section */
+.live-video-section {
+  margin-top: 20px;
+  position: relative;
+  max-width: 600px;
+  margin: auto;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 0px 0px rgba(255, 255, 255, 0.2);
+}
+
+video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.mute-button {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: transparent; /* ✅ Background hata diya */
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.mute-button img {
+    width: 35px; /* ✅ Icon ka size */
+    height: auto;
+    filter: invert(1); /* ✅ White color effect */
+}
+
+.mute-button:hover img {
+    opacity: 0.7; /* ✅ Hover effect */
+}
+/* ✅ Get Link Button */
+.link-button {
+  display: inline-block;
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  margin-top: 15px;
+  transition: 0.3s;
+}
+
+.link-button:hover {
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
+}
+
+
+/* ✅ Movie Grid - Exactly 2 Posters Per Row */
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* ✅ 2 Posters Per Row */
+    gap: 15px;
+    justify-content: center;
+    padding: 15px;
+}
+
+/* ✅ Movie Card - Background */
+.movie-card {
+    background: #000; /* ✅ Black Background */
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* ✅ Poster - Fix Size */
+.movie-card img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* ✅ Stylish "Top Movies in 2025" Text */
+.movies h2 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    padding: 15px 0;
+    background: linear-gradient(to right, #0061ff, #ff0000); /* ✅ Blue to Red Gradient */
+    width: 100%; /* ✅ अब Left से Right तक फैलेगा */
+    margin: 10px 0;
+    border-radius: 8px; /* ✅ Smooth Edges */
+}
+
+/* ✅ Stylish Download Button */
+.download-btn {
+    display: inline-block;
+    background: linear-gradient(45deg, #ff105f, #ffad06);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.download-btn:hover {
+    background: linear-gradient(45deg, #ffad06, #ff105f);
+    transform: scale(1.05);
+}
+.copyright-text {
+    text-align: center;
+    font-size: 14px;
+    color: #ccc;
+    padding: 15px;
+    margin-top: 20px;
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.copyright-text a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+.copyright-text a:hover {
+    text-decoration: underline;
+}
+.ad-text {
+    position: absolute;
+    top: 0px; /* ✅ Video ke upar */
+    right: 7px; /* ✅ Right side */
+    background-color: blue; /* ✅ Blue Background */
+    color: white; /* ✅ White Text */
+    padding: 5px 10px;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+}
